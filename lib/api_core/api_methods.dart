@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 
 /// A utility class for making HTTP GET and POST requests.
 ///
-/// The `ApiMethods` class provides methods to perform HTTP GET and POST
+/// The [ApiMethods] class provides methods to perform HTTP GET and POST
 /// requests, with and without authentication tokens. It also includes a
 /// static property for setting an API key.
 
