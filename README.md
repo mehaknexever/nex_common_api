@@ -11,29 +11,104 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages).
 -->
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+## Getting started
+
+A Dart class for sending HTTP GET and POST requests, with optional token-based authentication and API key support.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- Send HTTP GET and POST requests with optional headers.
+- Support for token-based authentication.
+- Option to include an API key in requests.
 
-## Getting started
+## Installation
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Add this package to your `pubspec.yaml` file:
+
+```yaml
+dependencies:
+  nex_common_api:
+    git:
+      url: https://github.com/mehaknexever/nex_common_api.git
+      ref: master
+```
+
+Run flutter pub get to install the dependencies.
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+### Importing the Class
+First, import the necessary packages:
 
 ```dart
-const like = 'sample';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'path_to_api_methods/api_methods.dart';
 ```
 
-## Additional information
+### Example
+Sending a GET Request
+To send a basic GET request:
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+```dart
+void main() async {
+  try {
+    var response = await ApiMethods().getMethod(url: "https://api.example.com/data");
+    print(response);
+  } catch (e) {
+    print("Error: $e");
+  }
+}
+```
+
+Sending a GET Request with Token
+To send a GET request with an authentication token:
+
+```dart
+void main() async {
+  try {
+    var response = await ApiMethods().getMethodWithToken(
+        url: "https://api.example.com/data",
+        token: "your_token_here"
+    );
+    print(response);
+  } catch (e) {
+    print("Error: $e");
+  }
+}
+```
+
+Sending a POST Request
+To send a basic POST request:
+
+```dart
+void main() async {
+  try {
+    var response = await ApiMethods().postMethod(
+        url: "https://api.example.com/data",
+        body: jsonEncode({"key": "value"})
+    );
+    print(response);
+  } catch (e) {
+    print("Error: $e");
+  }
+}
+```
+
+Sending a POST Request with Token
+To send a POST request with an authentication token:
+
+```dart
+void main() async {
+  try {
+    var response = await ApiMethods().postMethodWithToken(
+        url: "https://api.example.com/data",
+        token: "your_token_here",
+        body: jsonEncode({"key": "value"})
+    );
+    print(response);
+  } catch (e) {
+    print("Error: $e");
+  }
+}
+```
