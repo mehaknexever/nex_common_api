@@ -7,9 +7,6 @@ import 'package:http/http.dart' as http;
 /// requests, with and without authentication tokens. It also includes a
 /// static property for setting an API key.
 
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
 class ApiMethods {
   /// An optional static API key used for requests requiring authentication.
   static String? xApiKey;
@@ -61,14 +58,14 @@ class ApiMethods {
         Uri.parse(url ?? ""),
         headers: (xApiKey ?? "").isNotEmpty
             ? {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer $token",
-          'x-api-key': (xApiKey ?? ""),
-        }
+                "Content-Type": "application/json",
+                "Authorization": "Bearer $token",
+                'x-api-key': (xApiKey ?? ""),
+              }
             : {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer $token",
-        },
+                "Content-Type": "application/json",
+                "Authorization": "Bearer $token",
+              },
       );
       return _handleResponse(response);
     } catch (error, stackTrace) {
@@ -127,14 +124,14 @@ class ApiMethods {
         Uri.parse(url ?? ""),
         headers: (xApiKey ?? "").isNotEmpty
             ? {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer $token",
-          'x-api-key': (xApiKey ?? ""),
-        }
+                "Content-Type": "application/json",
+                "Authorization": "Bearer $token",
+                'x-api-key': (xApiKey ?? ""),
+              }
             : {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer $token",
-        },
+                "Content-Type": "application/json",
+                "Authorization": "Bearer $token",
+              },
         body: body,
       );
       return _handleResponse(response);
@@ -153,15 +150,14 @@ class ApiMethods {
       http.Response response) {
     if (response.statusCode == 200) {
       return (
-      response.statusCode,
-      jsonDecode(response.body) as Map<String, dynamic>
+        response.statusCode,
+        jsonDecode(response.body) as Map<String, dynamic>,
       );
     } else {
       return (
-      response.statusCode,
-      jsonDecode(response.body) as Map<String, dynamic>
+        response.statusCode,
+        jsonDecode(response.body) as Map<String, dynamic>,
       );
     }
   }
-
 }
