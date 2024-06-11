@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 
 class ApiMethods {
   /// An optional static API key used for requests requiring authentication.
-  static String? xApiKey;
+  static String? xApiKey = "";
 
   /// Sends an HTTP GET request to the specified [url] with optional [headers].
   ///
