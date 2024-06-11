@@ -7,14 +7,17 @@ import 'package:http/http.dart' as http;
 /// requests, with and without authentication tokens. It also includes a
 /// static property for setting an API key.
 
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 class ApiMethods {
   /// An optional static API key used for requests requiring authentication.
   static String? xApiKey;
 
   /// Sends an HTTP GET request to the specified [url] with optional [headers].
   ///
-  /// Returns a `Future` that completes with a `Map<String, dynamic>` containing
-  /// the response data.
+  /// Returns a `Future` that completes with a `(int, Map<String, dynamic>)`
+  /// containing the status code and the response data.
   ///
   /// Throws an exception if the request fails.
   ///
@@ -22,7 +25,7 @@ class ApiMethods {
   /// ```dart
   /// var response = await ApiMethods().getMethod(url: "https://api.example.com/data");
   /// ```
-  Future<Map<String, dynamic>> getMethod({
+  Future<(int statusCode, Map<String, dynamic> data)> getMethod({
     String? url,
     Map<String, String>? headers,
   }) async {
@@ -33,15 +36,15 @@ class ApiMethods {
       );
       return _handleResponse(response);
     } catch (error, stackTrace) {
-      rethrow;
+      throw (error, stackTrace);
     }
   }
 
   /// Sends an HTTP GET request to the specified [url] with an authentication
   /// [token] and optional API key.
   ///
-  /// Returns a `Future` that completes with a `Map<String, dynamic>` containing
-  /// the response data.
+  /// Returns a `Future` that completes with a `(int, Map<String, dynamic>)`
+  /// containing the status code and the response data.
   ///
   /// Throws an exception if the request fails.
   ///
@@ -49,7 +52,7 @@ class ApiMethods {
   /// ```dart
   /// var response = await ApiMethods().getMethodWithToken(url: "https://api.example.com/data", token: "your_token_here");
   /// ```
-  Future<Map<String, dynamic>> getMethodWithToken({
+  Future<(int statusCode, Map<String, dynamic> data)> getMethodWithToken({
     String? url,
     var token,
   }) async {
@@ -69,15 +72,15 @@ class ApiMethods {
       );
       return _handleResponse(response);
     } catch (error, stackTrace) {
-      rethrow;
+      throw (error, stackTrace);
     }
   }
 
   /// Sends an HTTP POST request to the specified [url] with optional [headers]
   /// and request [body].
   ///
-  /// Returns a `Future` that completes with a `Map<String, dynamic>` containing
-  /// the response data.
+  /// Returns a `Future` that completes with a `(int, Map<String, dynamic>)`
+  /// containing the status code and the response data.
   ///
   /// Throws an exception if the request fails.
   ///
@@ -85,7 +88,7 @@ class ApiMethods {
   /// ```dart
   /// var response = await ApiMethods().postMethod(url: "https://api.example.com/data", body: jsonEncode({"key": "value"}));
   /// ```
-  Future<Map<String, dynamic>> postMethod({
+  Future<(int statusCode, Map<String, dynamic> data)> postMethod({
     String? url,
     Map<String, String>? headers,
     var body,
@@ -98,15 +101,15 @@ class ApiMethods {
       );
       return _handleResponse(response);
     } catch (error, stackTrace) {
-      rethrow;
+      throw (error, stackTrace);
     }
   }
 
   /// Sends an HTTP POST request to the specified [url] with an authentication
   /// [token], request [body], and optional API key.
   ///
-  /// Returns a `Future` that completes with a `Map<String, dynamic>` containing
-  /// the response data.
+  /// Returns a `Future` that completes with a `(int, Map<String, dynamic>)`
+  /// containing the status code and the response data.
   ///
   /// Throws an exception if the request fails.
   ///
@@ -114,7 +117,7 @@ class ApiMethods {
   /// ```dart
   /// var response = await ApiMethods().postMethodWithToken(url: "https://api.example.com/data", token: "your_token_here", body: jsonEncode({"key": "value"}));
   /// ```
-  Future<Map<String, dynamic>> postMethodWithToken({
+  Future<(int statusCode, Map<String, dynamic> data)> postMethodWithToken({
     String? url,
     var token,
     var body,
@@ -136,22 +139,29 @@ class ApiMethods {
       );
       return _handleResponse(response);
     } catch (error, stackTrace) {
-      rethrow;
+      throw (error, stackTrace);
     }
   }
 
-  /// Handles the HTTP response and returns the response body as a `Map<String, dynamic>`.
+  /// Handles the HTTP response and returns the response body as a `(int, Map<String, dynamic>)`.
   ///
   /// If the status code is 200, it returns the response body. Otherwise,
   /// it also returns the response body, assuming it contains error information.
   ///
   /// Throws a `FormatException` if the response body cannot be parsed.
-  Map<String, dynamic> _handleResponse(http.Response response) {
+  (int statusCode, Map<String, dynamic> data) _handleResponse(
+      http.Response response) {
     if (response.statusCode == 200) {
-      return jsonDecode(response.body) as Map<String, dynamic>;
+      return (
+      response.statusCode,
+      jsonDecode(response.body) as Map<String, dynamic>
+      );
     } else {
-      return jsonDecode(response.body) as Map<String, dynamic>;
+      return (
+      response.statusCode,
+      jsonDecode(response.body) as Map<String, dynamic>
+      );
     }
   }
-}
 
+}
